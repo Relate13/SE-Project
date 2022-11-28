@@ -415,6 +415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CSVRoute: 
+  Message: 
 --- !u!4 &313614596
 Transform:
   m_ObjectHideFlags: 0
@@ -1209,6 +1210,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1455532493079060402, guid: 5da895c4b8ba95e44a0f795cde8fd8bd, type: 3}
+      propertyPath: m_text
+      value: "\u8BF7\u9009\u62E9csv\u6587\u4EF6..."
+      objectReference: {fileID: 0}
+    - target: {fileID: 1455532493079060402, guid: 5da895c4b8ba95e44a0f795cde8fd8bd, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: f352f520ad851824695577876959f733, type: 2}
+    - target: {fileID: 1455532493079060402, guid: 5da895c4b8ba95e44a0f795cde8fd8bd, type: 3}
+      propertyPath: m_fontStyle
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1455532493079060402, guid: 5da895c4b8ba95e44a0f795cde8fd8bd, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3109394100212510755, guid: f352f520ad851824695577876959f733, type: 2}
     - target: {fileID: 1455532493637021686, guid: 5da895c4b8ba95e44a0f795cde8fd8bd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

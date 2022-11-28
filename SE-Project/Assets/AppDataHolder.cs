@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AppDataHolder : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class AppDataHolder : MonoBehaviour
 
     public string CSVRoute;
 
+    public string Message;
 
     // Start is called before the first frame update
     private void Awake()
@@ -21,5 +23,15 @@ public class AppDataHolder : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+    public void SwitchErrorScene(string errorMessage)
+    {
+        Message = errorMessage;
+        SceneManager.LoadScene("Error");
+    }
+    public void SwitchFinishScene(string finishMessage)
+    {
+        Message = finishMessage;
+        SceneManager.LoadScene("Finish");
     }
 }

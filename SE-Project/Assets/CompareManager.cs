@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.IO;
 public class ProgramPair
 {
@@ -94,23 +95,31 @@ public class CompareManager : MonoBehaviour
     private void ReadCSVFile()
     {
         dirRoute=Path.GetDirectoryName(csvRoute);
-        string[] lines = File.ReadAllLines(csvRoute);
-        foreach (string line in lines)
+        try
         {
-            string[] tokens = line.Split(",");
-            bool available = false;
-            foreach(string token in tokens)
+            string[] lines = File.ReadAllLines(csvRoute);
+            foreach (string line in lines)
             {
-                if (token != "file1" && token != "file2")
+                string[] tokens = line.Split(",");
+                bool available = false;
+                foreach (string token in tokens)
                 {
-                    available = true;
-                    programSet.Add(token); 
+                    if (token != "file1" && token != "file2")
+                    {
+                        available = true;
+                        programSet.Add(token);
+                    }
+                }
+                if (available)
+                {
+                    programPairs.Add(new ProgramPair(tokens[0], tokens[1]));
                 }
             }
-            if (available)
-            {
-                programPairs.Add(new ProgramPair(tokens[0], tokens[1]));
-            }
+        }
+        catch (System.Exception)
+        {
+            AppDataHolder.instance.Message = "读取CSV文件时发生错误，请检查您的CSV文件格式以及是否被其他程序占用";
+            SceneManager.LoadScene("Error");
         }
         //init dictionaries
         GetID = new Dictionary<string,int>();
@@ -138,10 +147,24 @@ public class CompareManager : MonoBehaviour
     {
         string LPath = dirRoute + "/" + pair.first;
         string RPath = dirRoute + "/" + pair.second;
-        string[] ProgramLeft=File.ReadAllLines(LPath);
-        string[] ProgramRight=File.ReadAllLines(RPath);
-        codePanel_L.SetCode(ProgramLeft);
-        codePanel_R.SetCode(ProgramRight);
+        try
+        {
+            string[] ProgramLeft = File.ReadAllLines(LPath);
+            codePanel_L.SetCode(ProgramLeft);
+        }
+        catch (System.Exception)
+        {
+            AppDataHolder.instance.SwitchErrorScene("无法读取程序源代码，请检查文件路径：\n" + LPath);
+        }
+        try
+        {
+            string[] ProgramRight = File.ReadAllLines(RPath);
+            codePanel_R.SetCode(ProgramRight);
+        }
+        catch (System.Exception)
+        {
+            AppDataHolder.instance.SwitchErrorScene("无法读取程序源代码，请检查文件路径：\n" + RPath);
+        }
     }
     private void NextPair()
     {
@@ -149,7 +172,7 @@ public class CompareManager : MonoBehaviour
         if (CurrentIndex >= programPairs.Count)
         {
             OutputFile();
-            Debug.Log("Compare finished");
+            
         }
         else
         {
@@ -158,9 +181,11 @@ public class CompareManager : MonoBehaviour
     }
     public void SetEqual()
     {
+        if (CurrentIndex >= programPairs.Count)
+            return;
         ProgramPair currentPair = programPairs[CurrentIndex];
         programUnionSet.Unite(GetID[currentPair.first],GetID[currentPair.second]);
-        Debug.Log("united" + GetID[currentPair.first] + " and " + GetID[currentPair.second]);
+        //Debug.Log("united" + GetID[currentPair.first] + " and " + GetID[currentPair.second]);
         NextPair();
     }
     public void SetInEqual()
@@ -188,6 +213,25 @@ public class CompareManager : MonoBehaviour
                 }
             }
         }
-        File.WriteAllLines(outputPath, outputLines.ToArray());
+        try
+        {
+            File.WriteAllLines(outputPath, outputLines.ToArray());
+        }
+        catch (System.Exception)
+        {
+            AppDataHolder.instance.SwitchErrorScene("输出结果时发生错误，请检查文件路径：\n" + outputPath);
+        }
+        AppDataHolder.instance.SwitchFinishScene("判断成功，请访问文件路径：\n" + outputPath + "\n获取结果");
+    }
+
+    public void LargerText()
+    {
+        codePanel_L.CodeText.fontSize += 1;
+        codePanel_R.CodeText.fontSize += 1;
+    }
+    public void SmallerText()
+    {
+        codePanel_L.CodeText.fontSize -= 1;
+        codePanel_R.CodeText.fontSize -= 1;
     }
 }

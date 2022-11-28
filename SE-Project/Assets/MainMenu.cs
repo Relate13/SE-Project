@@ -18,7 +18,8 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            Debug.Log("Invalid File Path");
+            AppDataHolder.instance.SwitchErrorScene("无法找到对应文件，请检查文件路径");
         }
+
     }
 }
