@@ -17,7 +17,7 @@ public class FileBrowsePanel : MonoBehaviour
         new FileBrowser().OpenFileBrowser(bp, path =>
         {
             inputField.text= path;
-            Debug.LogWarning(path);
+            //Debug.LogWarning(path);
         });
     }
 }

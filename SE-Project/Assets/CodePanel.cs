@@ -23,11 +23,11 @@ public class HighlightPreset
 
     public string HandleLine(string line)
     {
-        Debug.Log("handling:" + line);
+        //Debug.Log("handling:" + line);
         string ret = line;
         foreach(KeyWord word in Keywords)
         {
-            Debug.Log("try replacing");
+            //Debug.Log("try replacing");
             ret = ret.Replace(word.Key, word.GenerateText());
         }
         return ret;
